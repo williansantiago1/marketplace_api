@@ -26,4 +26,9 @@ export const authController = {
     const user = await authService.me(req.user!.id);
     return res.json(user);
   },
+
+  async becomeSeller(req: Request, res: Response) {
+    const result = await authService.becomeSeller(req.user!.id);
+    return res.json(result);
+  },
 };

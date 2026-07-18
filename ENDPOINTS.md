@@ -51,17 +51,18 @@ Lojas (slug): `tech-store`, `casa-e-cia`
 [ ] 1. GET /health
 [ ] 2. POST /api/auth/login (cliente1)
 [ ] 3. GET /api/auth/me
-[ ] 4. GET /api/categories
-[ ] 5. GET /api/products
-[ ] 6. GET /api/stores/slug/tech-store
-[ ] 7. POST /api/cart/items
-[ ] 8. GET /api/cart
-[ ] 9. POST /api/orders/checkout
-[ ] 10. GET /api/orders
-[ ] 11. Login seller1 → GET /api/stores/mine → POST /api/products
-[ ] 12. Login admin → POST /api/categories
-[ ] 13. POST /api/coupons/validate
-[ ] 14. POST /api/payments (só com Stripe sk_test no .env)
+[ ] 4. POST /api/auth/become-seller (cliente vira SELLER — salve o novo token)
+[ ] 5. GET /api/categories
+[ ] 6. GET /api/products
+[ ] 7. GET /api/stores/slug/tech-store
+[ ] 8. POST /api/cart/items
+[ ] 9. GET /api/cart
+[ ] 10. POST /api/orders/checkout
+[ ] 11. GET /api/orders
+[ ] 12. Login seller1 → GET /api/stores/mine → POST /api/products
+[ ] 13. Login admin → POST /api/categories
+[ ] 14. POST /api/coupons/validate
+[ ] 15. POST /api/payments (só com Stripe sk_test no .env)
 ```
 
 ---
@@ -157,6 +158,27 @@ Bearer + body:
 Bearer. Sem body.
 
 **Esperado:** `200` — dados do usuário logado.
+
+---
+
+### `POST /api/auth/become-seller`
+
+Bearer. Sem body.
+
+Promove `CUSTOMER` → `SELLER` (estilo Mercado Livre: qualquer conta pode vender).  
+`ADMIN` permanece `ADMIN`. Invalida refresh tokens antigos e devolve **novos** tokens — atualize o Bearer.
+
+**Esperado:** `200`
+
+```json
+{
+  "user": { "id": "...", "name": "...", "email": "...", "role": "SELLER" },
+  "accessToken": "eyJ...",
+  "refreshToken": "abc123..."
+}
+```
+
+Depois disso: `POST /api/stores` → `POST /api/products`.
 
 ---
 
@@ -602,6 +624,7 @@ Para testar review no MVP: atualize o status do pedido no banco para `DELIVERED`
 | POST | `/api/auth/refresh` | — |
 | POST | `/api/auth/logout` | Bearer |
 | GET | `/api/auth/me` | Bearer |
+| POST | `/api/auth/become-seller` | Bearer |
 | GET | `/api/categories` | — |
 | GET | `/api/categories/:id` | — |
 | POST | `/api/categories` | ADMIN |

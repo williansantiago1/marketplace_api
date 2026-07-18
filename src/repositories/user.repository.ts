@@ -34,4 +34,11 @@ export const userRepository = {
       select: publicSelect,
     });
   },
+
+  updateRole(id: string, role: Role) {
+    return prisma.user.update({
+      where: { id },
+      data: { role },
+    });
+  },
 };

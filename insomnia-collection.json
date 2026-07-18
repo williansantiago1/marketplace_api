@@ -244,6 +244,33 @@
       "_type": "request"
     },
     {
+      "_id": "req_auth_become_seller",
+      "parentId": "fld_01_auth",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/auth/become-seller",
+      "name": "POST Become seller",
+      "description": "CUSTOMER → SELLER. Salve o novo accessToken em token",
+      "method": "POST",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -855,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+
+    {
       "_id": "req_auth_refresh",
       "parentId": "fld_01_auth",
       "modified": 1721322000000,

@@ -112,4 +112,26 @@ export const authService = {
   async logout(refreshToken: string) {
     await refreshTokenRepository.deleteByToken(refreshToken);
   },
+
+  // Qualquer conta pode vender: promove CUSTOMER → SELLER e emite novos tokens
+  async becomeSeller(userId: string) {
+    const user = await userRepository.findById(userId);
+    if (!user) {
+      throw new NotFoundError("Usuário não encontrado");
+    }
+
+    const nextRole = user.role === "ADMIN" ? "ADMIN" : "SELLER";
+    const updated =
+      user.role === nextRole
+        ? user
+        : await userRepository.updateRole(userId, nextRole);
+
+    await refreshTokenRepository.deleteAllByUserId(userId);
+    const tokens = await issueTokens(updated.id, updated.role);
+
+    return {
+      user: toPublicUser(updated),
+      ...tokens,
+    };
+  },
 };

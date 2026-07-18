@@ -37,3 +37,9 @@ authRoutes.post(
 );
 
 authRoutes.get("/me", authenticate, asyncHandler(authController.me));
+
+authRoutes.post(
+  "/become-seller",
+  authenticate,
+  asyncHandler(authController.becomeSeller),
+);

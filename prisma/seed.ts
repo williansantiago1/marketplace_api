@@ -49,6 +49,7 @@ async function main() {
         role: "SELLER",
       },
     }),
+    // CLIENTEs começam comprando; podem virar SELLER via POST /api/auth/become-seller
     prisma.user.create({
       data: {
         name: "Cliente Um",
@@ -262,6 +263,7 @@ async function main() {
   console.log("Admin: admin@marketplace.com / Senha123!");
   console.log("Seller: seller1@marketplace.com / Senha123!");
   console.log("Cliente: cliente1@marketplace.com / Senha123!");
+  console.log("Dica: cliente pode vender com POST /api/auth/become-seller (depois de logar)");
 }
 
 main()
