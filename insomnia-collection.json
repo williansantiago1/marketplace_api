@@ -1,0 +1,1191 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-07-18T19:00:00.000Z",
+  "__export_source": "marketplace-api",
+  "resources": [
+    {
+      "_id": "wrk_marketplace",
+      "parentId": null,
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "name": "Marketplace API",
+      "description": "API de marketplace — importe no Insomnia e selecione o environment Local",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_base",
+      "parentId": "wrk_marketplace",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3333/api",
+        "health_url": "http://localhost:3333/health",
+        "token": "",
+        "refresh_token": "",
+        "product_id": "",
+        "store_id": "",
+        "category_id": "",
+        "cart_item_id": "",
+        "order_id": ""
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "health_url",
+          "token",
+          "refresh_token",
+          "product_id",
+          "store_id",
+          "category_id",
+          "cart_item_id",
+          "order_id"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1,
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_marketplace",
+      "parentId": "wrk_marketplace",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "name": "Default Jar",
+      "cookies": [],
+      "_type": "cookie_jar"
+    },
+
+    {
+      "_id": "fld_00_health",
+      "parentId": "wrk_marketplace",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "name": "00 — Health",
+      "description": "Healthcheck da API",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_health",
+      "parentId": "fld_00_health",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.health_url }}",
+      "name": "GET Health",
+      "description": "Deve retornar { status: ok }",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+
+    {
+      "_id": "fld_01_auth",
+      "parentId": "wrk_marketplace",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "name": "01 — Auth",
+      "description": "Login → copie accessToken para a variável token do environment",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -900,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_auth_register",
+      "parentId": "fld_01_auth",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/auth/register",
+      "name": "POST Register",
+      "description": "Cria usuário. role: CUSTOMER ou SELLER",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Novo Cliente\",\n  \"email\": \"novo@teste.com\",\n  \"password\": \"Senha123!\",\n  \"role\": \"CUSTOMER\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_reg_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_auth_login_cliente",
+      "parentId": "fld_01_auth",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/auth/login",
+      "name": "POST Login (cliente1)",
+      "description": "Salve accessToken em token e refreshToken em refresh_token",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"cliente1@marketplace.com\",\n  \"password\": \"Senha123!\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_login_c_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -890,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_auth_login_seller",
+      "parentId": "fld_01_auth",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/auth/login",
+      "name": "POST Login (seller1)",
+      "description": "Troque o token do environment após o login",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"seller1@marketplace.com\",\n  \"password\": \"Senha123!\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_login_s_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -880,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_auth_login_admin",
+      "parentId": "fld_01_auth",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/auth/login",
+      "name": "POST Login (admin)",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"admin@marketplace.com\",\n  \"password\": \"Senha123!\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_login_a_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -870,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_auth_me",
+      "parentId": "fld_01_auth",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/auth/me",
+      "name": "GET Me",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -860,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_auth_refresh",
+      "parentId": "fld_01_auth",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/auth/refresh",
+      "name": "POST Refresh",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"refreshToken\": \"{{ _.refresh_token }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_refresh_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {},
+      "metaSortKey": -850,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_auth_logout",
+      "parentId": "fld_01_auth",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/auth/logout",
+      "name": "POST Logout",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"refreshToken\": \"{{ _.refresh_token }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_logout_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -840,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+
+    {
+      "_id": "fld_02_categories",
+      "parentId": "wrk_marketplace",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "name": "02 — Categories",
+      "description": "Listar é público. Criar/editar = ADMIN",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -800,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_cat_list",
+      "parentId": "fld_02_categories",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/categories",
+      "name": "GET List Categories",
+      "description": "Copie um id para category_id",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_cat_get",
+      "parentId": "fld_02_categories",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/categories/{{ _.category_id }}",
+      "name": "GET Category by ID",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -790,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_cat_create",
+      "parentId": "fld_02_categories",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/categories",
+      "name": "POST Create Category (ADMIN)",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Games\",\n  \"slug\": \"games\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_cat_c_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -780,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_cat_patch",
+      "parentId": "fld_02_categories",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/categories/{{ _.category_id }}",
+      "name": "PATCH Update Category (ADMIN)",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Games e Consoles\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_cat_p_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -770,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+
+    {
+      "_id": "fld_03_stores",
+      "parentId": "wrk_marketplace",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "name": "03 — Stores",
+      "description": "Lojas. mine/create = SELLER",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -700,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_store_slug",
+      "parentId": "fld_03_stores",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/stores/slug/tech-store",
+      "name": "GET Store by Slug (tech-store)",
+      "description": "Copie id para store_id",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_store_get",
+      "parentId": "fld_03_stores",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/stores/{{ _.store_id }}",
+      "name": "GET Store by ID",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -690,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_store_mine",
+      "parentId": "fld_03_stores",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/stores/mine",
+      "name": "GET My Stores (SELLER)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -680,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_store_create",
+      "parentId": "fld_03_stores",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/stores",
+      "name": "POST Create Store (SELLER)",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Minha Nova Loja\",\n  \"slug\": \"minha-nova-loja\",\n  \"description\": \"Loja de teste\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_store_c_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -670,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_store_patch",
+      "parentId": "fld_03_stores",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/stores/{{ _.store_id }}",
+      "name": "PATCH Update Store",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"description\": \"Descrição atualizada\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_store_p_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -660,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+
+    {
+      "_id": "fld_04_products",
+      "parentId": "wrk_marketplace",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "name": "04 — Products",
+      "description": "Listar público. CRUD = SELLER",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -600,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_prod_list",
+      "parentId": "fld_04_products",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/products",
+      "name": "GET List Products",
+      "description": "Copie um id para product_id",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        { "id": "q_page", "name": "page", "value": "1", "disabled": false },
+        { "id": "q_limit", "name": "limit", "value": "20", "disabled": false },
+        { "id": "q_search", "name": "search", "value": "", "disabled": true }
+      ],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_prod_get",
+      "parentId": "fld_04_products",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/products/{{ _.product_id }}",
+      "name": "GET Product by ID",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -590,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_prod_create",
+      "parentId": "fld_04_products",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/products",
+      "name": "POST Create Product (SELLER)",
+      "description": "Preencha store_id e category_id no environment",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"storeId\": \"{{ _.store_id }}\",\n  \"categoryId\": \"{{ _.category_id }}\",\n  \"name\": \"Produto Teste Insomnia\",\n  \"description\": \"Criado via collection\",\n  \"priceInCents\": 9990,\n  \"stock\": 15\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_prod_c_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -580,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_prod_patch",
+      "parentId": "fld_04_products",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/products/{{ _.product_id }}",
+      "name": "PATCH Update Product",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"priceInCents\": 8990,\n  \"stock\": 20,\n  \"isActive\": true\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_prod_p_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -570,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+
+    {
+      "_id": "fld_05_cart",
+      "parentId": "wrk_marketplace",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "name": "05 — Cart",
+      "description": "Fluxo cliente. Precisa product_id",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -500,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_cart_get",
+      "parentId": "fld_05_cart",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/cart",
+      "name": "GET Cart",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_cart_add",
+      "parentId": "fld_05_cart",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/cart/items",
+      "name": "POST Add Item",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"productId\": \"{{ _.product_id }}\",\n  \"quantity\": 1\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_cart_a_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -490,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_cart_patch",
+      "parentId": "fld_05_cart",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/cart/items/{{ _.cart_item_id }}",
+      "name": "PATCH Update Item Qty",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"quantity\": 2\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_cart_p_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -480,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_cart_del",
+      "parentId": "fld_05_cart",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/cart/items/{{ _.cart_item_id }}",
+      "name": "DELETE Remove Item",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -470,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+
+    {
+      "_id": "fld_06_coupons",
+      "parentId": "wrk_marketplace",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "name": "06 — Coupons",
+      "description": "Seed: BEMVINDO10, TECH50, FRETE0",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -400,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_coupon_validate",
+      "parentId": "fld_06_coupons",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/coupons/validate",
+      "name": "POST Validate Coupon",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"code\": \"BEMVINDO10\",\n  \"subtotalInCents\": 10000\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_coup_v_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_coupon_create",
+      "parentId": "fld_06_coupons",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/coupons",
+      "name": "POST Create Coupon (SELLER)",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"code\": \"PROMO20\",\n  \"type\": \"PERCENT\",\n  \"value\": 20,\n  \"storeId\": \"{{ _.store_id }}\",\n  \"maxUses\": 50\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_coup_c_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -390,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_coupon_list",
+      "parentId": "fld_06_coupons",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/coupons/store/{{ _.store_id }}",
+      "name": "GET Coupons by Store",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -380,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+
+    {
+      "_id": "fld_07_orders",
+      "parentId": "wrk_marketplace",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "name": "07 — Orders",
+      "description": "Checkout com carrinho preenchido",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -300,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_order_checkout",
+      "parentId": "fld_07_orders",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/orders/checkout",
+      "name": "POST Checkout",
+      "description": "Copie order id para order_id",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"couponCode\": \"BEMVINDO10\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_ord_c_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_order_checkout_empty",
+      "parentId": "fld_07_orders",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/orders/checkout",
+      "name": "POST Checkout (sem cupom)",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_ord_ce_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -290,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_order_list",
+      "parentId": "fld_07_orders",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/orders",
+      "name": "GET My Orders",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -280,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_order_get",
+      "parentId": "fld_07_orders",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/orders/{{ _.order_id }}",
+      "name": "GET Order by ID",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -270,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_order_store",
+      "parentId": "fld_07_orders",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/orders/store/{{ _.store_id }}",
+      "name": "GET Orders by Store (SELLER)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -260,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_order_cancel",
+      "parentId": "fld_07_orders",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/orders/{{ _.order_id }}/cancel",
+      "name": "POST Cancel Order",
+      "method": "POST",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -250,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+
+    {
+      "_id": "fld_08_payments",
+      "parentId": "wrk_marketplace",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "name": "08 — Payments",
+      "description": "Precisa STRIPE_SECRET_KEY sk_test no .env",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -200,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_payment_create",
+      "parentId": "fld_08_payments",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/payments",
+      "name": "POST Create Payment",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"orderId\": \"{{ _.order_id }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_pay_c_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+
+    {
+      "_id": "fld_09_reviews",
+      "parentId": "wrk_marketplace",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "name": "09 — Reviews",
+      "description": "Create só com order DELIVERED",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -100,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_review_list",
+      "parentId": "fld_09_reviews",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/reviews/product/{{ _.product_id }}",
+      "name": "GET Reviews by Product",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_review_create",
+      "parentId": "fld_09_reviews",
+      "modified": 1721322000000,
+      "created": 1721322000000,
+      "url": "{{ _.base_url }}/reviews",
+      "name": "POST Create Review",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"productId\": \"{{ _.product_id }}\",\n  \"orderId\": \"{{ _.order_id }}\",\n  \"rating\": 5,\n  \"comment\": \"Produto excelente\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "id": "pair_rev_c_ct", "name": "Content-Type", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.token }}"
+      },
+      "metaSortKey": -90,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    }
+  ]
+}
